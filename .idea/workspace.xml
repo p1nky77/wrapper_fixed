@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def0bb71-9a34-4bf3-a686-342f16bcd5c3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/New_wrapper.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wrapper_03_w_eh_w-opt_prog_bars" afterDir="false" />
+    <list default="true" id="def0bb71-9a34-4bf3-a686-342f16bcd5c3" name="Changes" comment="line causing the entrez_id error commented out">
+      <change afterPath="$PROJECT_DIR$/test_wrapper_03_w_eh_w_opt_prog_bars" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wrapper_03_w_eh_w-opt_prog_bars" beforeDir="false" afterPath="$PROJECT_DIR$/wrapper_03_w_eh_w_opt_prog_bars" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +17,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2sgAUCBnjBKitr0Gnux9jpSPAK4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -33,12 +29,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.wrapper_03_w_eh_w-opt_prog_bars.executor": "Run",
+    "Python.wrapper_03_w_eh_w_opt_prog_bars.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "advanced.settings"
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="wrapper_03_w_eh_w-opt_prog_bars" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="wrapper_03_w_eh_w_opt_prog_bars" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="New_wrapper" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -51,7 +49,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wrapper_03_w_eh_w-opt_prog_bars" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryanw\PycharmProjects\New_wrapper\wrapper_03_w_eh_w_opt_prog_bars" />
       <option name="PARAMETERS" value="process -n 2" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -77,6 +75,15 @@
       <option name="presentableId" value="Default" />
       <updated>1738866857890</updated>
     </task>
+    <task id="LOCAL-00001" summary="line causing the entrez_id error commented out">
+      <option name="closed" value="true" />
+      <created>1738885657631</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1738885657631</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,5 +96,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="line causing the entrez_id error commented out" />
+    <option name="LAST_COMMIT_MESSAGE" value="line causing the entrez_id error commented out" />
   </component>
 </project>

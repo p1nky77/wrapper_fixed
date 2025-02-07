@@ -1,0 +1,145 @@
+import os
+import tempfile
+import unittest
+from pathlib import Path
+import pandas as pd
+
+# Import functions from your script
+from wrapper_03_w_eh_w_opt_prog_bars import (
+    ensure_columns,
+    _check_folder,
+    _random_seed_list,
+    merge_master_tables,
+    setup_workflow,
+)
+
+# =============================================================================
+# Dummy dataset class for testing merge_master_tables
+# =============================================================================
+#
+# Your merge_master_tables() function iterates over items in a dictionary of dataset objects.
+# For each dataset that has a non‐None “experiments” attribute and that also has the required
+# data type attribute, it calls its .format() method. To test the merging logic, we create a dummy
+# dataset whose .format() method returns a simple DataFrame.
+#
+# NOTE: The function calls .transpose().add_prefix('SAMPLE_ID_') on the result.
+#
+class DummyDataset:
+    def __init__(self, data_type):
+        # Set experiments to a non-None value so that the dataset qualifies.
+        self.experiments = True
+        # Attach an attribute with the given data type name (e.g. 'transcriptomics' or 'copy_number')
+        setattr(self, data_type, True)
+
+    def format(self, data_type=None):
+        """
+        Return a DataFrame that will be processed by merge_master_tables.
+        For testing we return a DataFrame that looks like:
+
+            entrez_id  col1
+        0          1    10
+
+        When transposed it becomes:
+
+                      0
+        entrez_id     1
+        col1         10
+
+        And then add_prefix produces column names like 'SAMPLE_ID_entrez_id' and 'SAMPLE_ID_col1'.
+        """
+        return pd.DataFrame({
+            'entrez_id': [1],
+            'col1': [10]
+        })
+
+
+# =============================================================================
+# Test Cases
+# =============================================================================
+class TestHelpers(unittest.TestCase):
+
+    def test_ensure_columns_success(self):
+        df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+        # This should pass without error.
+        try:
+            ensure_columns(df, ['a'])
+        except Exception as e:
+            self.fail(f"ensure_columns raised an exception unexpectedly: {e}")
+
+    def test_ensure_columns_failure(self):
+        df = pd.DataFrame({'a': [1, 2]})
+        with self.assertRaises(KeyError):
+            ensure_columns(df, ['a', 'b'], context="test_ensure_columns_failure")
+
+    def test_random_seed_list_success(self):
+        seed_str = "42,17,256"
+        seeds = _random_seed_list(seed_str)
+        self.assertEqual(seeds, [42, 17, 256])
+
+    def test_random_seed_list_type_error(self):
+        with self.assertRaises(TypeError):
+            _random_seed_list(123)  # non-string input should raise TypeError
+
+    def test_check_folder_success(self):
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmp_path = Path(tmpdirname)
+            result = _check_folder(tmp_path)
+            self.assertIsInstance(result, Path)
+            # _check_folder returns the absolute path.
+            self.assertEqual(result, tmp_path.absolute())
+
+    def test_check_folder_failure(self):
+        # Provide a path that (almost certainly) does not exist.
+        with self.assertRaises(OSError):
+            _check_folder("non_existent_folder_1234567890")
+
+    def test_merge_master_tables_empty(self):
+        # When no dataset qualifies (empty dict), merge_master_tables should return None.
+        data_sets = {}
+        result = merge_master_tables(args=None, data_sets=data_sets, data_type='transcriptomics')
+        self.assertIsNone(result)
+
+    def test_merge_master_tables_with_dummy(self):
+        # Provide a dummy dataset that qualifies.
+        data_sets = {'dummy': DummyDataset('transcriptomics')}
+        result = merge_master_tables(args=None, data_sets=data_sets, data_type='transcriptomics')
+        #
+        # Compute the expected result:
+        # The function calls:
+        #   df = dummy.format(data_type='transcriptomics').transpose().add_prefix('SAMPLE_ID_')
+        dummy_df = DummyDataset('transcriptomics').format(data_type='transcriptomics')
+        expected = dummy_df.transpose().add_prefix('SAMPLE_ID_')
+        #
+        # Because there is only one dataset, merge_master_tables simply returns the transformed DataFrame.
+        pd.testing.assert_frame_equal(result, expected)
+
+    def test_setup_workflow_creates_folders(self):
+        # Create a temporary directory and a dummy args object; then run setup_workflow.
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            # Create a dummy args object with the required attributes.
+            class DummyArgs:
+                pass
+            args = DummyArgs()
+            args.WORKDIR = Path(tmpdirname)
+            args.OVERWRITE = True
+            #
+            # Define the expected folder structure.
+            data_in = args.WORKDIR.joinpath('data_in_tmp')
+            data_out = args.WORKDIR.joinpath('data_out')
+            splits = data_out.joinpath('splits')
+            x_data = data_out.joinpath('x_data')
+            y_data = data_out.joinpath('y_data')
+            #
+            # Call the function that should create the folders.
+            setup_workflow(args)
+            #
+            # Verify that all expected folders have been created.
+            self.assertTrue(data_in.is_dir(), f"{data_in} was not created.")
+            self.assertTrue(data_out.is_dir(), f"{data_out} was not created.")
+            self.assertTrue(splits.is_dir(), f"{splits} was not created.")
+            self.assertTrue(x_data.is_dir(), f"{x_data} was not created.")
+            self.assertTrue(y_data.is_dir(), f"{y_data} was not created.")
+
+
+if __name__ == '__main__':
+    unittest.main()
